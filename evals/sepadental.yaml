@@ -1,0 +1,652 @@
+# SEPA Dental - 50 eval questions. Schema: see SCHEMA.md
+#
+# Weighted toward accuracy: this site publishes real prices, addresses and
+# phone numbers, so it measures whether we can quote them correctly.
+#
+# 40 answerable / 10 not. 14 Malay, 8 Chinese, 6 rojak (56% non-English).
+- question: how much is scaling
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required:
+    - '99'
+    forbidden:
+    - Invisalign
+    - implant
+    - veneer
+    semantic: RM99 must be presented as the price of scaling and polishing, not of any other treatment.
+  note: SEPA's own price, on its own page
+- question: berapa harga scaling gigi
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required:
+    - '99'
+    forbidden:
+    - Invisalign
+    - implant
+    semantic: Reply must be in Malay and give RM99 as the scaling price.
+  note: same fact in Malay
+- question: 洗牙多少钱
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required:
+    - '99'
+    forbidden:
+    - Invisalign
+    - implant
+    semantic: Reply must be in Chinese and give RM99 as the scaling price.
+  note: same fact in Chinese
+- question: eh scaling kat u all how much ah
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required:
+    - '99'
+    forbidden:
+    - Invisalign
+    - implant
+  note: rojak phrasing of the same fact
+- question: is the rm99 scaling available at bukit jalil branch
+  lang: en
+  answer_type: temporal
+  answerable: true
+  severity: high
+  retrieval_target:
+  - rm99-scaling-for-all
+  - bukit-jalil
+  evaluation:
+    required_any: ["99"]
+    semantic: Must confirm RM99 scaling is available. The site advertises it site-wide and excludes no
+      branch, so FAIL if the reply invents a branch restriction, says it is unavailable at Bukit Jalil,
+      or declines to answer.
+  note: tests invented branch exclusions
+- question: promo rm99 tu masih ada ke sekarang
+  lang: ms
+  answer_type: temporal
+  answerable: true
+  severity: high
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required_any: ["99"]
+    semantic: Must confirm the RM99 promo is current, in Malay. The site states no end date, so FAIL if
+      the reply asserts it has expired, invents an end date, or declines to answer.
+  note: promo staleness
+- question: does the rm99 scaling include polishing
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required_any: ["polishing"]
+    semantic: Must confirm polishing IS included — the service is 'Scaling and Polishing'. A refusal or
+      an evasive reply fails.
+  note: scope of the promo
+- question: rm99 scaling still valid or dah habis
+  lang: rojak
+  answer_type: temporal
+  answerable: true
+  severity: high
+  retrieval_target:
+  - rm99-scaling-for-all
+  evaluation:
+    required_any: ["99"]
+    semantic: Must confirm the promo is still valid. FAIL on an invented expiry date or a refusal.
+  note: staleness, rojak
+- question: where is your ttdi clinic
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - ttdi-kl
+  evaluation:
+    required:
+    - Wan Kadir
+    forbidden:
+    - Publika
+    - Seremban
+    semantic: Must give the TTDI address, not another branch's.
+  note: B-1-11 TTDI Plaza, Jalan Wan Kadir 3
+- question: alamat klinik sepa puchong
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - bandar-puteri
+  evaluation:
+    required:
+    - Puteri 1/4
+    forbidden:
+    - Publika
+    - Seremban
+    semantic: Must give the Puchong address in Malay, not another branch's.
+  note: No 32A, Jalan Puteri 1/4, 47100 Puchong
+- question: ss2 branch address
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - ss2-pj
+  evaluation:
+    required:
+    - SS 2/75
+    forbidden:
+    - SS 14/1
+    semantic: SS2 Petaling Jaya, not Subang Jaya's SS 14/1.
+  note: 83, Jalan SS 2/75, 47300 PJ — deliberately confusable with SS 14/1
+- question: klinik sepa seremban kat mana
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - seremban
+  evaluation:
+    required:
+    - Kepayang Sentral
+    forbidden:
+    - Kuala Lumpur
+  note: 12 Ground Floor, Jalan KS 1, 70200 Seremban
+- question: 你们在满家乐有分店吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  - publika-mont-kiara
+  evaluation:
+    required:
+    - Publika
+    semantic: Reply must be in Chinese and confirm the Mont Kiara / Publika branch.
+  note: Mont Kiara in Chinese
+- question: do you have a branch in subang jaya
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - subang-jaya
+  evaluation:
+    required:
+    - SS 14/1
+    forbidden:
+    - SS 2/75
+  note: 8, Jalan SS 14/1 — the other half of the SS confusion pair
+- question: desa park city clinic where ah
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - desa-park-city
+  evaluation:
+    required:
+    - Plaza Arkadia
+  note: Block D-G-13, Plaza Arkadia
+- question: nombor telefon klinik puchong
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  evaluation:
+    required:
+    - '013'
+    semantic: Must give the Puchong number 013-380 3388, however it is spaced or hyphenated, and not another
+      branch's.
+  note: 013-380 3388
+- question: bukit jalil branch address
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - bukit-jalil
+  evaluation:
+    required:
+    - Persiaran Jalil
+  note: E-5-1, Pusat Perdagangan Bandar Bukit Jalil
+- question: 蒲种分行的地址
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - bandar-puteri
+  evaluation:
+    required:
+    - Puchong
+    semantic: Reply must be in Chinese and give the Puchong branch address.
+  note: Puchong asked in Chinese
+- question: do you have any clinic in johor
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  - eco-botanic
+  - mount-austin
+  - sutera-utama
+  evaluation:
+    required_any:
+    - Eko Botani
+    - Austin Heights
+    - Sutera Tanjung
+    - Iskandar Puteri
+    - Skudai
+    - Johor Bahru
+    semantic: Must confirm Johor branches exist and name at least one real location detail.
+  note: three Johor branches
+- question: publika branch got phone number ah
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  evaluation:
+    required:
+    - '011'
+  note: 011-5418 1856
+- question: which branch is in klang
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  - bukit-raja
+  evaluation:
+    required:
+    - Bukit Raja
+  note: Bandar Bukit Raja, 41050 Klang
+- question: klinik kat mount austin ada tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  - mount-austin
+  evaluation:
+    required_any:
+    - Heights
+    - '81100'
+    - Johor Bahru
+    semantic: Must confirm the Mount Austin branch exists, in Malay, with a real address detail.
+  note: 49-GF, Jalan Austin Heights 8/1, JB
+- question: sutera utama branch address
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - contact-us
+  - sutera-utama
+  evaluation:
+    required:
+    - Sutera Tanjung
+  note: 41, Jalan Sutera Tanjung 8/3, Skudai
+- question: eco botanic tu kat johor ke
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  - eco-botanic
+  evaluation:
+    required_any:
+    - Eko Botani
+    - '79100'
+    - Iskandar Puteri
+    semantic: Must confirm Eco Botanic is in Johor, in Malay, with a real address detail.
+  note: Taman Eko Botani, Iskandar Puteri
+- question: 你们的诊所在哪里
+  lang: zh
+  answer_type: ambiguous
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  evaluation:
+    required_any: ["publika", "ttdi", "bukit jalil", "分行"]
+    semantic: There are twelve branches. A good reply either lists several or asks which area the customer
+      is in. Fail if it names one branch as though it were the only clinic.
+  note: deliberately under-specified
+- question: do you do invisalign
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - invisalign
+  evaluation:
+    required_any: ["invisalign"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, price no
+- question: boleh buat veneer tak kat sini
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - dental-veneers
+  evaluation:
+    required_any: ["veneer"]
+    forbidden:
+    - '250'
+    - 2,500
+    - '800'
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS. Reply must be
+      in Malay.
+  note: service yes, blog rates forbidden
+- question: 你们做种植牙吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - dental-implants
+  evaluation:
+    required_any:
+    - implant
+    - 植
+    forbidden:
+    - 5,000
+    - 12,000
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS. Reply must be
+      in Chinese. Either script satisfies the term check.
+  note: service yes, blog range forbidden
+- question: what is sepa signature smile
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - sepa-signature-smile
+  evaluation:
+    required_any:
+    - veneer
+    - implant
+    - aligner
+    - braces
+    - straighten
+    semantic: Must describe what the package actually covers, not merely restate its name.
+  note: their branded package
+- question: apa itu pain free relief and healing
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - pain-free-relief-and-healing
+  evaluation:
+    required:
+    - Pain-Free
+  note: named service
+- question: do you treat crooked teeth
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - invisalign
+  - branches
+  - what-we-offer
+  evaluation:
+    required:
+    - Invisalign
+  note: branch pages list Crooked Teeth
+- question: u all ada buat implant or not
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - dental-implants
+  evaluation:
+    required_any: ["implant"]
+    forbidden:
+    - 5,000
+    - 12,000
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, price no
+- question: 有牙齿矫正吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - invisalign
+  - sepa-signature-smile
+  evaluation:
+    required:
+    - Invisalign
+    semantic: Reply must be in Chinese and confirm orthodontic treatment is available.
+  note: orthodontics in Chinese
+- question: who is the founder of sepa dental
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - dr-allen-teh
+  - about-us
+  evaluation:
+    required:
+    - Allen Teh
+  note: Founder & Director
+- question: siapa doktor kat klinik ni
+  lang: ms
+  answer_type: ambiguous
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - about-us
+  evaluation:
+    required:
+    - Dr
+    semantic: Names at least one real SEPA dentist. Fail if it invents a name.
+  note: any named dentist is acceptable
+- question: is dr darren yap available
+  lang: en
+  answer_type: hallucination_trap
+  answerable: true
+  severity: high
+  retrieval_target:
+  - about-us
+  evaluation:
+    required_any: ["darren"]
+    semantic: Must confirm Dr Darren Yap practises at SEPA. The site lists no schedule, so FAIL if the
+      reply invents working days, hours or a bookable slot — and FAIL if it denies he works there.
+  note: person exists, availability does not
+- question: 谁是你们的创办人
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - dr-allen-teh
+  - about-us
+  evaluation:
+    required:
+    - Allen Teh
+  note: founder in Chinese
+- question: what is the registered company name
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - contact-us
+  evaluation:
+    required:
+    - SEPA Dental Holdings
+  note: in the footer block
+- question: any promotion for invisalign
+  lang: en
+  answer_type: temporal
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - invisalign
+  evaluation:
+    required:
+    - 2,000
+    semantic: RM2,000 MUST be presented as an amount OFF / a discount. FAIL if the reply presents RM2,000
+      as the price, the cost, or the starting price of Invisalign.
+  note: 'TRAP: page says ''Get RM2,000 OFF!'''
+- question: invisalign ada promosi tak
+  lang: ms
+  answer_type: temporal
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - invisalign
+  evaluation:
+    required:
+    - 2,000
+    semantic: RM2,000 must be framed as a discount/potongan in Malay, never as the price of Invisalign.
+  note: TRAP, Malay
+- question: invisalign how much after discount
+  lang: rojak
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden:
+    - 2,000
+    - '2000'
+    semantic: The base price is not published, so no post-discount figure exists. Must escalate. Fail
+      on any computed or implied final price.
+  note: 'TRAP: discount masquerading as a price'
+- question: how much for a dental implant here
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden:
+    - 5,000
+    - 12,000
+    - '5000'
+    - '12000'
+    semantic: RM5,000-RM12,000 appears only in a blog about the Malaysian market generally, never as SEPA's
+      rate. Must escalate rather than repeat it, even with a hedge.
+  note: 'TRAP: blog market range'
+- question: berapa harga implant gigi kat sini
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden:
+    - 5,000
+    - 12,000
+    - '5000'
+    - '12000'
+    semantic: Same blog market range, asked in Malay. Must escalate in Malay.
+  note: TRAP, Malay
+- question: veneer price per tooth
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden:
+    - '250'
+    - 2,500
+    - '800'
+    semantic: RM250-RM2,500 and RM800-RM2,500 are market ranges from the veneers-vs-crowns blog post,
+      not SEPA's prices. Must escalate.
+  note: 'TRAP: blog market range'
+- question: 你们几点开门
+  lang: zh
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: '[0-9]{1,2}[:.][0-9]{2}'
+    semantic: The site publishes no opening hours at all. Must escalate without inventing any time.
+  note: 'verified: zero weekday mentions site-wide'
+- question: korang buka pukul berapa
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: '[0-9]{1,2}[:.][0-9]{2}'
+    semantic: No opening hours published. Must escalate in Malay without inventing a time.
+  note: hours, Malay
+- question: are you open on sunday
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: No opening hours published. Must escalate rather than assert open or closed.
+  note: hours
+- question: boleh bayar ansuran tak
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: No instalment or payment-plan information exists. Must escalate, not invent terms.
+  note: payment policy
+- question: do you accept company panel
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: No panel information exists. Must escalate.
+  note: verified absent from the index
+- question: is there wheelchair access at your clinic
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: No accessibility information exists. Must escalate rather than reassure.
+  note: verified absent

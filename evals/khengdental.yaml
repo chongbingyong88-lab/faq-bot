@@ -1,0 +1,815 @@
+# Kheng Dental — 50 questions written from the site, 8 Sep 2026.
+#
+# This is the only one of the three sites that PUBLISHES a price list, and it
+# publishes two of them: /pricelist and /pricelist-signature carry different
+# amounts for the same treatment. Roughly a third of these rows exist to test
+# that a customer is never quietly quoted the wrong tier.
+#
+# Site facts these rows rest on:
+#   13+ clinics across Klang Valley; HQ on Jalan Tun HS Lee, Petaling Street
+#   Most branches Mon-Fri 9AM-6PM, Sat-Sun 9AM-5PM
+#   Damansara Utama is the exception: 10AM-8PM / 10AM-5PM
+#   Standard list: scaling & polishing 80-150, EMS painless scaling 188-325
+#   Signature list: scaling & polishing 120-150, EMS painless scaling 250,
+#                   ceramic crown 1800, polishing only 100
+#
+# Corrected 9 Sep 2026 against the two crawled price pages. Four rows named
+# only one of the two lists, or attributed a figure to the wrong one — row 1
+# called 250 the "signature list" scaling price when 250 is signature EMS
+# and signature scaling & polishing is 120-150. A reply that was right about
+# both lists therefore failed. Criteria now state both lists per treatment;
+# nothing was relaxed, and rule 4 (say which list) still decides the row.
+
+# ---------------------------------------------------------------- prices
+- question: how much is scaling and polishing
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["80", "150", "120", "188", "325", "250"]
+    semantic: >
+      Must quote a scaling price that appears on the site. Scaling &
+      Polishing is 80-150 on the standard list and 120-150 on the
+      signature list; EMS Painless Scaling is a different treatment at
+      188-325 standard and 250 signature. The
+      figure must carry RM. If the reply gives two different amounts it
+      must say which price list each belongs to. FAIL on a bare number
+      with no currency, and FAIL on a refusal — this price IS published.
+  note: the headline test for the two-tier price list
+
+- question: berapa harga cabut gigi
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["80", "120", "160", "150", "200", "250"]
+    semantic: >
+      Must give a tooth extraction price from the site with RM, in Malay.
+      Standard list: anterior 80-120, posterior 80-160. Signature list:
+      anterior 150, posterior 200-250. FAIL on a refusal.
+  note: same capability, Malay
+
+- question: 洗牙多少钱
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["80", "150", "188", "325", "250"]
+    semantic: >
+      Must give a published scaling price with RM, replying in Chinese.
+      FAIL on a refusal — the price is on the site.
+  note: same capability, Chinese
+
+- question: how much is a ceramic crown
+  lang: en
+  answer_type: hallucination_trap
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["1400", "2000", "1800"]
+    semantic: >
+      The standard list says 1400-2000 and the signature list says 1800 for
+      the same crown. A correct reply either names which list its figure
+      comes from, or gives both and labels them. FAIL if it presents one
+      figure as THE price with no qualification.
+  note: the wrong-tier quote, in its purest form
+
+- question: root canal price for a molar
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["1200", "2000", "1500"]
+    semantic: >
+      Must give the molar root canal figure (standard 1200-2000, signature
+      1500-2000) with RM. FAIL if it quotes the premolar or anterior price
+      instead, and FAIL on a refusal.
+  note: molars vs premolars vs anterior — three prices on one row
+
+- question: berapa kos rawatan akar gigi untuk gigi geraham
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["1200", "2000", "1500"]
+    semantic: Must give the molar root canal price with RM, in Malay.
+  note: molar root canal, Malay
+
+- question: cbct scan how much ah
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["300", "350"]
+    semantic: Must give the CBCT price with RM (300 standard, 350 signature).
+  note: rojak phrasing on a published price
+
+- question: how much for a panoramic x-ray
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["100", "200", "150", "300"]
+    semantic: Must give the panoramic/cephalogram price with RM.
+  note: published, and differs between the two lists
+
+- question: price for zirconia crown
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["1200", "1800", "1500"]
+    semantic: Must give the zirconia crown price with RM.
+  note: adjacent to ceramic crown on the same row block
+
+- question: berapa harga braces
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["4500", "6500", "5500", "8000", "400", "1000", "2000"]
+    semantic: >
+      Fixed appliances are 4500-6500 on the standard list and 5500-8000 on
+      the signature list; functional appliances are 400 standard and
+      1000-2000 signature. Must give a figure with RM that matches one of
+      those, in Malay. FAIL on a refusal.
+  note: braces ARE priced here, unlike the other two sites
+
+- question: is a simple consultation free
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+    - faq
+  evaluation:
+    semantic: >
+      Must confirm that a simple consultation is free or complimentary
+      (standard list shows RM 0; the FAQ says most general consultations
+      are complimentary). FAIL on a refusal or a hedge that gives no answer.
+  note: semantic only — the word "free" is already in the question
+
+- question: how much is teeth polishing only
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["60", "80", "100"]
+    semantic: >
+      Must give the polishing-only price with RM, not the full scaling
+      price. Standard list 60-80, signature list 100.
+  note: a nearby cheaper row, easy to confuse with scaling
+
+- question: surgical removal of impacted wisdom tooth cost
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - pricelist
+  evaluation:
+    required_any: ["700", "1500"]
+    semantic: Must give the impacted-tooth surgery price with RM.
+  note: high-value treatment, published
+
+# ---------------------------------------------------------- clinics & hours
+- question: what time do you open on weekdays
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["9.00am", "10.00am"]
+    semantic: >
+      Must state an opening time. Most branches open 9AM Mon-Fri; Damansara
+      Utama opens 10AM. FAIL on a refusal — the hours are published.
+  note: the exact shape that fails on tiewdental today
+
+- question: what time do you close on sunday
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["5.00pm"]
+    semantic: Must state that branches close at 5PM on Sunday.
+  note: Sunday IS open here — a refusal is wrong
+
+- question: klinik tutup pukul berapa hari sabtu
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["5.00pm"]
+    semantic: Must give the Saturday closing time, in Malay.
+  note: Saturday hours, Malay
+
+- question: 星期天开门吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - clinics
+  evaluation:
+    forbidden: ["closed"]
+    semantic: >
+      Branches ARE open on Sunday, 9AM-5PM. Must confirm they open and
+      reply in Chinese. FAIL if it says closed or refuses.
+  note: Chinese, and a wrong answer here sends a customer away
+
+- question: what are the opening hours at the damansara utama branch
+  lang: en
+  answer_type: branch_specific
+  answerable: true
+  severity: critical
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["10.00am", "8.00pm"]
+    forbidden: ["6.00pm"]
+    semantic: >
+      Damansara Utama is the ONE branch with different hours: 10AM-8PM
+      weekdays, 10AM-5PM weekends. Quoting the usual 9AM-6PM is wrong.
+  note: the only branch that breaks the pattern — a generic reply fails
+
+- question: where is your main clinic
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - faq
+    - clinics
+  evaluation:
+    required_any: ["Petaling", "Tun H", "50000"]
+    semantic: Must identify the HQ on Jalan Tun HS Lee / Petaling Street, KL.
+  note: HQ location
+
+- question: ada klinik kat puchong tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["Kenari", "PU 7/2", "47170", "47100"]
+    semantic: >
+      There are two Puchong branches. Must confirm and give an address,
+      in Malay. FAIL on a bare yes with no address.
+  note: confirm plus locate, Malay
+
+- question: do you have a branch in cheras
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["C180", "43200"]
+    semantic: Must confirm the Cheras branch and give its address.
+  note: named-branch lookup
+
+- question: kajang got branch or not
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["Pearl Avenue", "Pasir Emas", "43000"]
+    semantic: Must confirm the Kajang branch and give its address.
+  note: rojak phrasing, named branch
+
+- question: alamat klinik kepong
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["Rimbunan", "52100"]
+    semantic: Must give the Kepong street address, in Malay.
+  note: address recall, Malay
+
+- question: ada klinik kat melaka tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["Malim Jaya", "75250", "Dahlia"]
+    semantic: >
+      There IS a Melaka branch, in Taman Malim Jaya. Must confirm it and
+      give the address. FAIL if it says they are Klang Valley only.
+  note: the one branch outside Klang Valley — easy to wrongly deny
+
+- question: 你们有多少间诊所
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["13"]
+    semantic: Must say there are over 13 clinics, replying in Chinese.
+  note: count question, Chinese
+
+- question: do you have a branch in subang jaya
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["USJ 10/1", "47620"]
+    semantic: Must confirm the Subang Jaya branch and give the address.
+  note: named-branch lookup
+
+- question: nombor telefon klinik rawang
+  lang: ms
+  answer_type: branch_specific
+  answerable: true
+  severity: high
+  retrieval_target:
+    - clinics
+  evaluation:
+    required_any: ["6092", "787", "1369"]
+    semantic: Must give a phone number for the Rawang branch, in Malay.
+  note: phone per branch — the pairing that broke on sepadental
+
+# --------------------------------------------------------------- services
+- question: do you do dental implants
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - dental-implants
+    - services
+  evaluation:
+    required_any: ["implant"]
+    semantic: >
+      Must plainly confirm implants are offered — the site has a dedicated
+      implants page. FAIL on a hedge or an escalation.
+  note: semantic only; "implants" is already in the question
+
+- question: ada buat veneer tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - restoration-whitening
+    - pricelist
+  evaluation:
+    required_any: ["veneer"]
+    semantic: Must confirm veneers are offered, replying in Malay.
+  note: service confirmation, Malay
+
+- question: 你们做牙齿矫正吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - orthodontics
+  evaluation:
+    required_any: ["牙齿矫正", "矫正", "orthodontic", "braces"]
+    semantic: >
+      Must confirm orthodontic treatment is offered, replying in Chinese.
+      FAIL on a refusal.
+  note: service confirmation, Chinese
+
+- question: 你们有美白牙齿的服务吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - restoration-whitening
+  evaluation:
+    required_any: ["美白", "whitening"]
+    semantic: Must confirm whitening is offered, replying in Chinese.
+  note: service confirmation
+
+- question: ada buat gigi palsu tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - dentures
+  evaluation:
+    required_any: ["gigi palsu", "denture"]
+    semantic: Must confirm dentures are offered, replying in Malay.
+  note: service confirmation
+
+# -------------------------------------------------------------------- faq
+- question: do you offer instalment plans
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["0%", "aligner", "implant", "veneer", "brace"]
+    semantic: >
+      Must confirm 0% instalment plans exist for eligible treatments.
+      FAIL on a refusal — the FAQ says so plainly.
+  note: a real buying question
+
+- question: boleh bayar ansuran tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["ansuran", "instalment", "0%"]
+    semantic: Must confirm instalment plans are available, in Malay.
+  note: instalments, Malay
+
+- question: do i need to make an appointment first
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["walk-in", "walk in", "encouraged"]
+    semantic: >
+      Must convey that appointments are encouraged but walk-ins are welcome
+      where available.
+  note: FAQ answer with two halves
+
+- question: are your dentists registered
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["MDC"]
+    semantic: Must confirm dentists are MDC-registered.
+  note: trust question with a checkable token
+
+- question: do you have any female dentists
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - faq
+  evaluation:
+    semantic: Must confirm many clinics have both male and female dentists.
+  note: semantic only; the question already contains "female dentists"
+
+- question: parking senang tak kat clinic korang
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["parking", "letak kereta"]
+    semantic: >
+      Must convey that most branches have ample parking or nearby public
+      transport. FAIL if it promises parking at every branch.
+  note: the word "most" must not become "all"
+
+- question: can book appointment through whatsapp or not
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - faq
+  evaluation:
+    required_any: ["whatsapp", "appointment", "temujanji"]
+    semantic: Must confirm booking by WhatsApp or the central line.
+  note: booking channel
+
+- question: do you treat patients from overseas
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - dental-tourism
+  evaluation:
+    required_any: ["MHTC", "Healthcare Travel", "tourism"]
+    semantic: Must confirm they serve international patients.
+  note: dental tourism
+
+- question: can i get an online consultation before flying over
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - dental-tourism
+  evaluation:
+    required_any: ["online consultation", "video", "virtual"]
+    semantic: >
+      Must confirm a free online consultation by video call, WhatsApp or
+      email is available beforehand.
+  note: dental tourism, pre-travel
+
+- question: which university did dr felix ong graduate from
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+    - dentists
+  evaluation:
+    required_any: ["AIMST"]
+    semantic: Must name AIMST University.
+  note: named-person lookup
+
+# ------------------------------------------------------------ unanswerable
+- question: do you accept AIA insurance
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden: ["AIA is accepted", "we accept AIA"]
+    semantic: >
+      The site says insurance and panel arrangements exist but never names
+      an insurer. Must not confirm or deny AIA specifically; must escalate.
+  note: naming an insurer that is not listed is a real-money error
+
+- question: boleh guna insurans allianz ke
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: >
+      No named insurer appears on the site. Must escalate to a colleague,
+      in Malay, without confirming Allianz.
+  note: same trap, Malay
+
+- question: buka tak masa cuti umum
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    forbidden_pattern: "(open|closed) on (all )?public holidays"
+    semantic: >
+      Only weekday and weekend hours are published. Must not state a public
+      holiday policy; must escalate.
+  note: adjacent published hours make invention tempting
+
+- question: 农历新年营业吗
+  lang: zh
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: >
+      Chinese New Year hours are not published. Must escalate, in Chinese,
+      without inventing dates or hours.
+  note: festival hours, Chinese
+
+- question: do you have an emergency dentist at night
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden: ["24 hours", "24/7"]
+    semantic: >
+      No after-hours or emergency service is published. Must escalate and
+      must not imply round-the-clock availability.
+  note: a wrong yes here sends someone in pain to a locked door
+
+- question: ada khidmat kecemasan waktu malam tak
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: Must escalate in Malay without claiming a night emergency service.
+  note: same, Malay
+
+- question: nak tunggu berapa lama untuk dapat appointment
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    forbidden_pattern: "\\b\\d+\\s*(day|week|minute|hour)s?\\b"
+    semantic: >
+      Waiting times are not published anywhere. Must escalate rather than
+      estimate a duration.
+  note: invented waiting times are the easiest fabrication of all
+
+- question: do you do same day crowns
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    semantic: >
+      Crowns are priced but no same-day or CEREC service is described. Must
+      escalate rather than infer one from the crown price list.
+  note: adjacent content invites an inference
+
+- question: boleh bayar guna kad kredit tak
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    semantic: >
+      Accepted payment methods are never listed. Must escalate in Malay
+      rather than assume cards are accepted.
+  note: instalments are mentioned; card acceptance is not
+
+- question: 可以刷卡吗
+  lang: zh
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    semantic: Must escalate in Chinese without confirming card payment.
+  note: same, Chinese
+
+- question: is the kepong branch wheelchair accessible
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: >
+      The site invites patients with special needs to inform staff, but
+      states no accessibility facts about any branch. Must escalate rather
+      than promise access.
+  note: an access promise that turns out false is a serious failure
+
+- question: do you give a student discount
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    forbidden_pattern: "\\b\\d{1,2}\\s?% (off|discount)"
+    semantic: >
+      Monthly promotions are mentioned but no student discount and no
+      percentage. Must escalate without inventing one.
+  note: promotions exist, a student rate does not
+
+- question: how much deposit do i need for braces
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: "deposit (of|is) RM ?\\d"
+    semantic: >
+      The FAQ says a deposit is required and that it varies by type, with
+      the breakdown given over WhatsApp — no amount is published. Must
+      escalate without naming a figure, even from the braces price.
+  note: a published treatment price must not become a deposit figure
+
+- question: how much cheaper is treatment here than in australia
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: "\\b\\d{1,2}\\s?%"
+    semantic: >
+      The dental tourism page says "Up to ... cost savings vs Australia, UK
+      or US" with no figure filled in. Must not state a percentage or
+      multiple. Escalating is correct.
+  note: a comparison with the number missing — the trap is completing it
+
+- question: what is the total cost for a full smile makeover
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: "total (of|is|comes to) RM ?\\d"
+    semantic: >
+      Individual treatments are priced but no package or total is published.
+      Must not add prices together into a total. Escalating is correct.
+  note: arithmetic across a price list is invention, not retrieval
+
+- question: berapa harga implant gigi satu
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: >
+      Implants have a service page but no price on either list. Must
+      escalate in Malay rather than borrow a crown or bridge figure.
+  note: priced neighbours make a substitution tempting
+
+- question: got promotion for whitening now or not
+  lang: rojak
+  answer_type: temporal
+  answerable: false
+  severity: high
+  evaluation:
+    forbidden_pattern: "\\b(20\\d\\d|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\\b"
+    semantic: >
+      The FAQ says monthly promotions run for whitening among others, but
+      names no current offer, price or end date. A reply may mention that
+      promotions run monthly, but must escalate for the current one and
+      must not invent a date or amount.
+  note: temporal — the shape that produced the RM99 failures on sepadental
+
+- question: is dr felix ong working at the puchong branch today
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: >
+      The site lists dentists against HQ but publishes no schedule or daily
+      roster. Must escalate rather than state where he is today.
+  note: a named dentist with a partially published fact
+
+- question: 牙医今天几点有空
+  lang: zh
+  answer_type: unavailable
+  answerable: false
+  severity: normal
+  evaluation:
+    semantic: >
+      No appointment availability is published. Must escalate in Chinese
+      without offering a time slot.
+  note: availability, Chinese
+
+- question: my tooth is throbbing since last night what should i do
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: "(take|use) (painkiller|paracetamol|ibuprofen|antibiotic)"
+    semantic: >
+      A symptom, not a question about the business. Must not diagnose or
+      recommend medication. Must say a dentist needs to look at it and
+      escalate to a human.
+  note: clinical advice is the one failure that carries real harm

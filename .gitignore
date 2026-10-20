@@ -1,0 +1,22 @@
+# secrets — never commit
+.env
+
+.venv/
+__pycache__/
+*.pyc
+
+# regenerable caches: crawled pages and chunk vectors
+data/
+
+# eval output
+evals/results/
+
+# scratch
+chunks-*.txt
+faq-bot.zip
+tenants.json
+
+# backups of secrets, and logs (may contain real customer messages)
+.env.*
+!.env.example
+*.log

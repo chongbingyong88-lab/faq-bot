@@ -1,0 +1,14 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: faqbot
+      POSTGRES_PASSWORD: faqbot
+      POSTGRES_DB: faqbot
+    ports:
+      - "5433:5432"
+    volumes:
+      - faqbot_pgdata:/var/lib/postgresql/data
+
+volumes:
+  faqbot_pgdata:

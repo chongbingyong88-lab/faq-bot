@@ -1,0 +1,547 @@
+# ST Tiew Dental - 50 eval questions. Schema: see SCHEMA.md
+#
+# Weighted toward answerable:false on price. This site masks 21 of its 26
+# price mentions (RM2xx, RM5xxx, RM1xxxx) to force a consultation call.
+# Exactly one quotable service price exists site-wide: RM100 scaling.
+#
+# 30 answerable / 20 not. 14 Malay, 6 Chinese, 6 rojak (52% non-English).
+# All 16 masked-price rows use the same rule: forbidden_pattern "RM ?[0-9]".
+- question: how much is scaling and polishing
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - services/general-dentistry
+  evaluation:
+    required:
+    - '100'
+    forbidden:
+    - braces
+    - Invisalign
+    semantic: RM100 must be presented as the scaling and polishing price, not another treatment's.
+  note: '''Scaling & Polishing price start from RM100'' — the only unmasked service price'
+- question: berapa harga cuci gigi
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - services/general-dentistry
+  evaluation:
+    required:
+    - '100'
+    semantic: Reply must be in Malay and give RM100 as the scaling price.
+  note: THE 0.027 CASE — correct chunk retrieved but barely above the floor. If MIN_SCORE is tuned on
+    English this row breaks first.
+- question: 洗牙多少钱
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - services/general-dentistry
+  evaluation:
+    required:
+    - '100'
+    semantic: Reply must be in Chinese and give RM100 as the scaling price.
+  note: same fact in Chinese
+- question: scaling kat u all berapa ya
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - services/general-dentistry
+  evaluation:
+    required:
+    - '100'
+  note: same fact, rojak
+- question: what time do you close on saturday
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/
+  evaluation:
+    required:
+    - 5.00pm
+  note: Saturday 9.30am - 5.00pm, consistent across branches
+- question: banting branch address
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - Bunga Pekan
+    forbidden:
+    - Cheras
+  note: No. 126 & 128, Jalan Bunga Pekan, 42700 Banting
+- question: klinik banting buka pukul berapa
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - '9.30'
+    semantic: Reply must be in Malay and give Banting's hours.
+  note: Mon-Fri 9.30am - 5.30pm
+- question: is cheras balakong open on sunday
+  lang: en
+  answer_type: branch_specific
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/pekan-batu-11-balakong
+  evaluation:
+    required:
+    - Closed
+    semantic: Cheras Balakong is CLOSED on Sunday. Fail if the reply gives Sunday opening hours, which
+      would be another branch's.
+  note: pairs with the Banting Sunday row below — a generic Sunday answer fails one of the two
+- question: 峇冬分行星期日开吗
+  lang: zh
+  answer_type: branch_specific
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - 1.00pm
+    forbidden:
+    - Closed
+    semantic: Banting IS open on Sunday, 9.30am-1.00pm. Reply in Chinese. Fail if it says closed.
+  note: the other half of the pair
+- question: no telefon klinik banting
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - '3187'
+  note: +603-3187 2967
+- question: what is your email address
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - branch/
+  evaluation:
+    required:
+    - tiewdentalcentre@gmail.com
+  note: same email on every branch page
+- question: berapa banyak cawangan tiew dental ada
+  lang: ms
+  answer_type: ambiguous
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - tiewdental.com
+  evaluation:
+    required_any: ["49", "50"]
+    semantic: The homepage says 49 clinics; /locate-us says 'over 50 branches'. Either figure passes.
+      Fail only on a number found nowhere on the site.
+  note: THE SITE CONTRADICTS ITSELF — flagged for you; row written to accept either
+- question: do you have a branch in semenyih
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - branch/semenyih
+  evaluation:
+    required_any:
+    - Pasar Baru
+    - '43500'
+    - '8723'
+    semantic: Must confirm the Semenyih branch exists and give a real address or phone detail.
+  note: branch page exists
+- question: weekday u all open till what time ah
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/
+  evaluation:
+    required:
+    - 5.30pm
+  note: Mon-Fri close 5.30pm
+- question: cheras balakong phone number
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - branch/pekan-batu-11-balakong
+  evaluation:
+    required:
+    - '9075'
+    forbidden:
+    - '3187'
+  note: +603-9075 7677 — must not return Banting's
+- question: 你们有多少间分行
+  lang: zh
+  answer_type: ambiguous
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - tiewdental.com
+  evaluation:
+    required_any: ["49", "50"]
+    semantic: 49 or 'over 50' both pass — the site is inconsistent. Reply in Chinese.
+  note: branch count in Chinese
+- question: cawangan banting ada buka hari sabtu tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - '9.30'
+  note: Saturday 9.30am - 5.00pm
+- question: do you have a clinic in setapak
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - branch/setapak
+  evaluation:
+    required_any:
+    - Genting Kelang
+    - '53300'
+    - '4031'
+    - 3/50c
+    semantic: Must confirm the Setapak branch exists and give a real address or phone detail.
+  note: branch page exists
+- question: banting clinic sunday open till when
+  lang: rojak
+  answer_type: branch_specific
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/banting
+  evaluation:
+    required:
+    - 1.00pm
+  note: Sunday 9.30am - 1.00pm at Banting
+- question: what are your operating hours on weekdays
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: critical
+  retrieval_target:
+  - branch/
+  evaluation:
+    required:
+    - 9.30am
+  note: Mon-Fri 9.30am - 5.30pm
+- question: do you do braces
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/braces
+  evaluation:
+    required_any: ["braces"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, price no — the pair to the braces-price row below
+- question: ada buat invisalign tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/invisalign
+  evaluation:
+    required_any: ["invisalign"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS. Reply must be
+      in Malay.
+  note: service yes, price masked
+- question: 你们做植牙吗
+  lang: zh
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/oral-implantology
+  evaluation:
+    required_any:
+    - implant
+    - 植
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS. Reply must be
+      in Chinese. Either script satisfies the term check.
+  note: service yes, price masked
+- question: do you offer teeth whitening
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/cosmetic-dentistry
+  evaluation:
+    required_any: ["whitening"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, RM6xx masked
+- question: ada rawatan untuk kanak kanak tak
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/kids-dentistry
+  evaluation:
+    required:
+    - Kid
+  note: Kid Dentistry page
+- question: do you do root canal
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/general-dentistry
+  evaluation:
+    required_any: ["root canal", "endodontic"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, RM7xx masked
+- question: u all got do veneer or not
+  lang: rojak
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/cosmetic-dentistry
+  evaluation:
+    required_any: ["veneer"]
+    forbidden_pattern: RM ?[0-9]
+    semantic: Must AFFIRMATIVELY confirm the service is offered. A refusal, an 'I don't have that information'
+      reply, or one that merely repeats the treatment name without confirming it, FAILS.
+  note: service yes, RM2xxx masked
+- question: what is comfortable scaling and polishing
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: normal
+  retrieval_target:
+  - services/painless-comfortable-scaling
+  evaluation:
+    required:
+    - CSP
+  note: their branded air-polishing treatment
+- question: which days does dr say tian hui work
+  lang: en
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - our-team/dr-say-tian-hui
+  evaluation:
+    required:
+    - Monday
+    semantic: The duty schedule lists a branch per weekday. Fail if it invents days or branches.
+  note: DUTY SCHEDULE
+- question: doktor doris tan kat cawangan mana
+  lang: ms
+  answer_type: factual
+  answerable: true
+  severity: high
+  retrieval_target:
+  - our-team/dr-doris-tan
+  evaluation:
+    required:
+    - Bukit Indah
+  note: Dr Doris Tan duty schedule
+- question: how much are braces
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+    semantic: The site masks this as RM5xxx. Must escalate. Fail on any braces figure, including repeating
+      'RM5xxx' verbatim, which is meaningless to a customer and one token from RM5,000.
+  note: standardised to forbidden_pattern per review — a callback phone number no longer fails the row
+- question: berapa harga braces
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+    semantic: RM5xxx masked. Must escalate in Malay.
+  note: RM5xxx
+- question: 牙套多少钱
+  lang: zh
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+    semantic: RM5xxx masked. Must escalate in Chinese.
+  note: RM5xxx
+- question: invisalign price
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Invisalign > Pricing says RM1xxxx — five masked digits
+- question: harga invisalign berapa ye
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: RM1xxxx
+- question: how much is a dental implant
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Oral Implantology says RM6xxx
+- question: 植牙多少钱
+  lang: zh
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: RM6xxx
+- question: berapa kos rawatan akar gigi
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Root Canal says RM7xx
+- question: crown price
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Crown says RM1xxx
+- question: how much for a filling
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Composite Filling says RM9x
+- question: berapa harga cabut gigi budak
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Kid Dentistry extraction says RM5x
+- question: denture cost
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Dentures says RM3xx
+- question: teeth whitening price
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+    semantic: The service question above IS answerable; only the price is not. Must escalate on price.
+  note: RM6xx
+- question: veneer berapa ah kat u all
+  lang: rojak
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Porcelain Veneers says RM2xxx
+- question: amalgam removal cost
+  lang: en
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+    semantic: The page's own FAQ repeats 'Prices start from RM2xx', so the masked string appears twice
+      in context. Must still escalate.
+  note: RM2xx, doubled in context
+- question: berapa harga myobrace
+  lang: ms
+  answer_type: hallucination_trap
+  answerable: false
+  severity: critical
+  evaluation:
+    forbidden_pattern: RM ?[0-9]
+  note: Paediatric MyoBrace says RM1xxx
+- question: is parking free at your clinic
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: No parking information anywhere on the site. Must escalate.
+  note: verified absent from the index
+- question: boleh guna insurans tak
+  lang: ms
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: No insurance information. Must escalate in Malay.
+  note: verified absent
+- question: can i pay by instalment
+  lang: en
+  answer_type: unavailable
+  answerable: false
+  severity: critical
+  evaluation:
+    semantic: No instalment information. Must escalate.
+  note: verified absent
+- question: u all got wheelchair access ah
+  lang: rojak
+  answer_type: unavailable
+  answerable: false
+  severity: high
+  evaluation:
+    semantic: No accessibility information. Must escalate rather than reassure.
+  note: verified absent
